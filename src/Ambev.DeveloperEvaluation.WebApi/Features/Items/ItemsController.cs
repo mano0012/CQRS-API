@@ -1,20 +1,16 @@
-﻿using Ambev.DeveloperEvaluation.Application.Users.DeleteUser;
-using Ambev.DeveloperEvaluation.Application.Users.GetUser;
-using Ambev.DeveloperEvaluation.WebApi.Common;
-using Ambev.DeveloperEvaluation.WebApi.Features.Users.DeleteUser;
-using Ambev.DeveloperEvaluation.WebApi.Features.Users.GetUser;
+﻿using Ambev.DeveloperEvaluation.WebApi.Common;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Ambev.DeveloperEvaluation.WebApi.Features.Items.CreateItem;
 using Ambev.DeveloperEvaluation.Application.Items.CreateItem;
+using Ambev.DeveloperEvaluation.WebApi.Features.Items.GetItem;
+using Ambev.DeveloperEvaluation.Application.Items.GetItem;
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Items;
 
-
-
 /// <summary>
-/// Controller for managing user operations
+/// Controller for managing Items operations
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
@@ -43,7 +39,7 @@ public class ItemsController : BaseController
     [HttpPost]
     [ProducesResponseType(typeof(ApiResponseWithData<CreateItemResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateItem([FromBody] CreateItemRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateItem([FromBody] GetItemRequest request, CancellationToken cancellationToken)
     {
         var validator = new CreateItemRequestValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
@@ -57,67 +53,24 @@ public class ItemsController : BaseController
         return Created(string.Empty, new ApiResponseWithData<CreateItemResponse>
         {
             Success = true,
-            Message = "User created successfully",
+            Message = "Item created successfully",
             Data = _mapper.Map<CreateItemResponse>(response)
         });
     }
 
     /// <summary>
-    /// Retrieves a user by their ID
+    /// Retrieves all items
     /// </summary>
-    /// <param name="id">The unique identifier of the user</param>
     /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>The user details if found</returns>
-    [HttpGet("{id}")]
-    [ProducesResponseType(typeof(ApiResponseWithData<GetUserResponse>), StatusCodes.Status200OK)]
+    /// <returns>All created items</returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(ApiResponseWithData<IEnumerable<GetItemResponse>>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> GetUser([FromRoute] Guid id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetAllItems(CancellationToken cancellationToken)
     {
-        var request = new GetUserRequest { Id = id };
-        var validator = new GetUserRequestValidator();
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
 
-        if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
-
-        var command = _mapper.Map<GetUserCommand>(request.Id);
-        var response = await _mediator.Send(command, cancellationToken);
-
-        return Ok(new ApiResponseWithData<GetUserResponse>
-        {
-            Success = true,
-            Message = "User retrieved successfully",
-            Data = _mapper.Map<GetUserResponse>(response)
-        });
-    }
-
-    /// <summary>
-    /// Deletes a user by their ID
-    /// </summary>
-    /// <param name="id">The unique identifier of the user to delete</param>
-    /// <param name="cancellationToken">Cancellation token</param>
-    /// <returns>Success response if the user was deleted</returns>
-    [HttpDelete("{id}")]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteUser([FromRoute] Guid id, CancellationToken cancellationToken)
-    {
-        var request = new DeleteUserRequest { Id = id };
-        var validator = new DeleteUserRequestValidator();
-        var validationResult = await validator.ValidateAsync(request, cancellationToken);
-
-        if (!validationResult.IsValid)
-            return BadRequest(validationResult.Errors);
-
-        var command = _mapper.Map<DeleteUserCommand>(request.Id);
-        await _mediator.Send(command, cancellationToken);
-
-        return Ok(new ApiResponse
-        {
-            Success = true,
-            Message = "User deleted successfully"
-        });
+        var response = await _mediator.Send(new GetAllItemsQuery(), cancellationToken);
+        return Ok(_mapper.Map<IEnumerable<GetItemResponse>>(response));
     }
 }

@@ -1,8 +1,6 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Enums;
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Items.CreateItem;
 
-namespace Ambev.DeveloperEvaluation.WebApi.Features.Items.CreateItem;
-
-public class CreateItemRequest
+public class GetItemRequest
 {
     /// <summary>
     /// Gets or sets the item name. Must be unique and contain only valid characters.

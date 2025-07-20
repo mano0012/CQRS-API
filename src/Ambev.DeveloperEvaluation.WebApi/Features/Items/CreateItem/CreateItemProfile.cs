@@ -7,7 +7,7 @@ public class CreateItemProfile : Profile
 {
     public CreateItemProfile()
     {
-        CreateMap<CreateItemRequest, CreateItemCommand>();
+        CreateMap<GetItemRequest, CreateItemCommand>();
         CreateMap<CreateItemResult, CreateItemResponse>();
     }
 }

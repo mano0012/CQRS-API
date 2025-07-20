@@ -17,6 +17,6 @@ public class CreateItemCommandValidator : AbstractValidator<CreateItemCommand>
         RuleFor(item => item.Name)
             .NotEmpty().WithMessage("Name is required.")
             .Length(3, 50).WithMessage("Name must be between 3 and 50 characters.");
-        RuleFor(user => user.Price).GreaterThan(0).WithMessage("Price must be greater than zero.");
+        RuleFor(item => item.Price).GreaterThan(0).WithMessage("Price must be greater than zero.");
     }
 }

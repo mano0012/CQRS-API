@@ -2,7 +2,7 @@
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Items.CreateItem;
 
-public class CreateItemRequestValidator : AbstractValidator<CreateItemRequest>
+public class CreateItemRequestValidator : AbstractValidator<GetItemRequest>
 {
     /// <summary>
     /// Initializes a new instance of the CreateItemRequestValidator with defined validation rules.
@@ -17,6 +17,6 @@ public class CreateItemRequestValidator : AbstractValidator<CreateItemRequest>
         RuleFor(item => item.Name)
             .NotEmpty().WithMessage("Name is required.")
             .Length(3, 50).WithMessage("Name must be between 3 and 50 characters.");
-        RuleFor(user => user.Price).GreaterThan(0).WithMessage("Price must be greater than zero.");
+        RuleFor(item => item.Price).GreaterThan(0).WithMessage("Price must be greater than zero.");
     }
 }
