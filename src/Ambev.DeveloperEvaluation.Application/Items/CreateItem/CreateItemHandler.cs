@@ -47,7 +47,7 @@ public class CreateItemHandler : IRequestHandler<CreateItemCommand, CreateItemRe
         if (existingItem != null)
             throw new DomainException($"Item with name {command.Name} already exists");
 
-        var item = _mapper.Map<Item>(command);
+        var item = new Item(command.Name, command.Price);
         
         var createdItem = await _itemRepository.CreateAsync(item, cancellationToken);
         var result = _mapper.Map<CreateItemResult>(item);

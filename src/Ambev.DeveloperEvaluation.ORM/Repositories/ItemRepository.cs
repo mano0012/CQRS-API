@@ -1,6 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Xml.Linq;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
 
@@ -50,5 +51,11 @@ public class ItemRepository : IItemRepository
     public async Task<IEnumerable<Item>> GetAllItemsAsync(CancellationToken cancellationToken = default)
     {
         return await _context.Items.AsNoTracking().ToListAsync(cancellationToken);
+    }
+
+    public async Task<Item?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Items
+            .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
     }
 }

@@ -39,7 +39,7 @@ public class ItemsController : BaseController
     [HttpPost]
     [ProducesResponseType(typeof(ApiResponseWithData<CreateItemResponse>), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateItem([FromBody] GetItemRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> CreateItem([FromBody] CreateItemRequest request, CancellationToken cancellationToken)
     {
         var validator = new CreateItemRequestValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
@@ -65,11 +65,8 @@ public class ItemsController : BaseController
     /// <returns>All created items</returns>
     [HttpGet]
     [ProducesResponseType(typeof(ApiResponseWithData<IEnumerable<GetItemResponse>>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetAllItems(CancellationToken cancellationToken)
     {
-
         var response = await _mediator.Send(new GetAllItemsQuery(), cancellationToken);
         return Ok(_mapper.Map<IEnumerable<GetItemResponse>>(response));
     }

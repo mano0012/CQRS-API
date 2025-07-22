@@ -20,10 +20,18 @@ public interface IItemRepository
     /// <summary>
     /// Retrieves a item by their name
     /// </summary>
-    /// <param name="email">The name to search for</param>
+    /// <param name="name">The name to search for</param>
     /// <param name="cancellationToken">Cancellation token</param>
     /// <returns>The item if found, null otherwise</returns>
     Task<Item?> GetByNameAsync(string name, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Retrieves a item by their ID
+    /// </summary>
+    /// <param name="id">The ID to search for</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The item if found, null otherwise</returns>
+    Task<Item?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves all items

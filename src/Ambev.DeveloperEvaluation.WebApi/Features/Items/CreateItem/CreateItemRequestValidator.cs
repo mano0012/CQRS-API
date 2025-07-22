@@ -2,7 +2,7 @@
 
 namespace Ambev.DeveloperEvaluation.WebApi.Features.Items.CreateItem;
 
-public class CreateItemRequestValidator : AbstractValidator<GetItemRequest>
+public class CreateItemRequestValidator : AbstractValidator<CreateItemRequest>
 {
     /// <summary>
     /// Initializes a new instance of the CreateItemRequestValidator with defined validation rules.
