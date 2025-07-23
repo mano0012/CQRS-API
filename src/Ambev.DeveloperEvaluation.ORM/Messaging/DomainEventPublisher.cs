@@ -11,7 +11,7 @@ public class DomainEventPublisher : IDomainEventPublisher
 {
     public Task PublishAsync(object domainEvent)
     {
-        Console.WriteLine($"Domain Event Published: {domainEvent.GetType().Name}");
+        Console.WriteLine($"{domainEvent.GetType().Name}: {((BaseEvent)domainEvent).GetEventMessage()}");
         return Task.CompletedTask;
     }
 }

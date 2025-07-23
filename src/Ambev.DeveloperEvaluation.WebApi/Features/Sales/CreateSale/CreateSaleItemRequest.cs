@@ -2,6 +2,6 @@
 
 public class CreateSaleItemRequest
 {
-    public Guid ItemId { get; private set; } = Guid.Empty;
-    public int Quantity { get; private set; } = 0;
+    public Guid ItemId { get; set; } = Guid.Empty;
+    public int Quantity { get; set; } = 0;
 }

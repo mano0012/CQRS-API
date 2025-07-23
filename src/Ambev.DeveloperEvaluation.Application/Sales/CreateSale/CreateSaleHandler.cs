@@ -1,4 +1,5 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Entities;
+using Ambev.DeveloperEvaluation.Domain.Strategies.Discount;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
@@ -43,6 +44,8 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
 
         var saleItems = new List<SaleItem>();
 
+        var discountStrategy = new QuantityBasedDiscountStrategy();
+
         foreach (var item in command.Items)
         {
             var product = await _itemRepository.GetByIdAsync(item.ItemId)
@@ -52,7 +55,8 @@ public class CreateSaleHandler : IRequestHandler<CreateSaleCommand, CreateSaleRe
                 product.Id,
                 product.Name,
                 item.Quantity,
-                product.Price
+                product.Price,
+                discountStrategy
             );
 
             saleItems.Add(saleItem);

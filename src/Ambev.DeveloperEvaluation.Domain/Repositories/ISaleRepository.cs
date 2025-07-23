@@ -17,27 +17,20 @@ public interface ISaleRepository
     /// <returns>The created sale</returns>
     Task<Sale> CreateAsync(Sale sale, CancellationToken cancellationToken = default);
 
-    ///// <summary>
-    ///// Retrieves a item by their name
-    ///// </summary>
-    ///// <param name="name">The name to search for</param>
-    ///// <param name="cancellationToken">Cancellation token</param>
-    ///// <returns>The item if found, null otherwise</returns>
-    //Task<Item?> GetByNameAsync(string name, CancellationToken cancellationToken = default);
+    /// <summary>
+    /// Retrieves a sale by their Id, ensuring that users are not going to see other users sales
+    /// </summary>
+    /// <param name="saleId">The sale id to search for</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The sale if found, null otherwise</returns>
+    Task<Sale?> GetByIdAsync(Guid saleId, Guid CustomerId, CancellationToken cancellationToken = default);
 
-    ///// <summary>
-    ///// Retrieves a item by their ID
-    ///// </summary>
-    ///// <param name="id">The ID to search for</param>
-    ///// <param name="cancellationToken">Cancellation token</param>
-    ///// <returns>The item if found, null otherwise</returns>
-    //Task<Item?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-
-    ///// <summary>
-    ///// Retrieves all items
-    ///// </summary>
-    ///// <param name="cancellationToken">Cancellation token</param>
-    ///// <returns>The item list</returns>
-    //Task<IEnumerable<Item>> GetAllItemsAsync(CancellationToken cancellationToken = default);
+    /// <summary>
+    /// Retrieves all sales by their customer
+    /// </summary>
+    /// <param name="CustomerId">The customer id to search for</param>
+    /// <param name="cancellationToken">Cancellation token</param>
+    /// <returns>The sale list if found, empty otherwise</returns>
+    Task<List<Sale>> GetByCustomerAsync(Guid CustomerId, CancellationToken cancellationToken = default);
 }
 

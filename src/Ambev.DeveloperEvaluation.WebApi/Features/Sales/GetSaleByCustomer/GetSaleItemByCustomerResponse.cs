@@ -1,5 +1,6 @@
-﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
-public class CreateSaleItemResponse
+﻿namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.GetSaleByCustomer;
+
+public class GetSaleItemByCustomerResponse
 {
     public Guid ItemId { get; set; } = Guid.Empty;
     public string ItemName { get; set; } = string.Empty;
@@ -8,5 +9,4 @@ public class CreateSaleItemResponse
     public decimal UnitPrice { get; set; } = 0;
     public decimal Discount { get; set; } = 0;
     public decimal TotalPrice { get; set; } = 0;
-    public decimal TotalPriceWithDiscount { get; set; } = 0;
 }

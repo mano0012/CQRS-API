@@ -1,9 +1,7 @@
 ﻿using Ambev.DeveloperEvaluation.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Ambev.DeveloperEvaluation.Domain.Events;
+using Ambev.DeveloperEvaluation.Domain.Strategies.Discount;
+using Ambev.DeveloperEvaluation.Domain.Specifications;
 
 namespace Ambev.DeveloperEvaluation.Domain.Entities;
 
@@ -18,7 +16,8 @@ public class SaleItem : BaseEntity
     public decimal TotalPrice => Quantity * UnitPrice;
     public decimal TotalPriceWithDiscount => TotalPrice - Discount;
 
-    public SaleItem(Guid itemId, string itemName, int quantity, decimal unitPrice)
+    private IDiscountStrategy _discountStrategy;
+    public SaleItem(Guid itemId, string itemName, int quantity, decimal unitPrice, IDiscountStrategy discountStrategy)
     {
         ValidateQuantity(quantity);
 
@@ -28,28 +27,18 @@ public class SaleItem : BaseEntity
         Quantity = quantity;
         UnitPrice = unitPrice;
         Cancelled = false;
+        _discountStrategy = discountStrategy;
         Discount = CalculateDiscount();
     }
     public SaleItem() { }
 
     private decimal CalculateDiscount()
     {
-        //Less than 4: No discount
-        if (Quantity < 4) 
-            return 0;
+        if(_discountStrategy == null)
+            throw new ArgumentNullException("Discount Strategy not set");
 
-        //Between 4 and 10: 10% discount
-        if (Quantity < 10) 
-            return TotalPrice * (decimal)0.1;
+        return _discountStrategy.CalculateDiscount(this);
 
-        //Between 10-20: 20% discount
-        return TotalPrice * (decimal)0.2;
-    }
-
-    private void ValidateQuantity(int quantity)
-    {
-        if (quantity <= 0 || quantity > 20)
-            throw new DomainException("Quantity must be between 1 and 20");
     }
 
     public void ChangeQuantity(int newQuantity)
@@ -58,5 +47,27 @@ public class SaleItem : BaseEntity
 
         Quantity = newQuantity;
         Discount = CalculateDiscount();
+    }
+
+    public void ChangeDiscountPolicy(IDiscountStrategy policy)
+    {
+        _discountStrategy = policy;
+    }
+
+    private void ValidateQuantity(int quantity)
+    {
+        var quantitySpecification = new SaleHasValidItemCountSpecification();
+
+        if (!quantitySpecification.IsSatisfiedBy(quantity))
+            throw new DomainException("Quantity must be between 1 and 20");
+    }
+
+    public void CancelItem()
+    {
+        if (!Cancelled)
+        {
+            Cancelled = true;
+            AddDomainEvent(new SaleItemCancelledEvent(Id));
+        }
     }
 }

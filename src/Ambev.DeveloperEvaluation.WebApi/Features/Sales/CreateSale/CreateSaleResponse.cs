@@ -4,10 +4,10 @@ namespace Ambev.DeveloperEvaluation.WebApi.Features.Sales.CreateSale;
 
 public class CreateSaleResponse
 {
-    public Guid Id { get; private set; }
-    public DateTime CreatedAt { get; private set; }
-    public string BranchName { get; private set; } = string.Empty;
-    public Guid CustomerId { get; private set; }
-    public List<CreateSaleItemResponse> Items { get; private set; } = new();
+    public Guid Id { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public string BranchName { get; set; } = string.Empty;
+    public Guid CustomerId { get; set; }
+    public List<CreateSaleItemResponse> Items { get; set; } = new();
 
 }

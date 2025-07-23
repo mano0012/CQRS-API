@@ -15,7 +15,8 @@ public class Sale : BaseEntity
     public DateTime CreatedAt { get; set; }
     public List<SaleItem> Items { get; private set; } = new List<SaleItem>();
     public Boolean Cancelled { get; private set; } = false;
-    
+    public decimal TotalPrice => Items.Where(i => !i.Cancelled).Sum(i => i.TotalPriceWithDiscount);
+
     public Sale(Guid customer, string branch, List<SaleItem> items)
     {
         if(customer == Guid.Empty)
@@ -31,6 +32,20 @@ public class Sale : BaseEntity
         CreatedAt = DateTime.UtcNow;
         Cancelled = false;
         AddDomainEvent(new SaleCreatedEvent(Id, CustomerId));
+    }
+
+    public void Cancel()
+    {
+        if (Cancelled)
+            throw new DomainException("Sale is already cancelled.");
+
+        foreach (var item in Items)
+        {
+            item.CancelItem();
+        }
+
+        Cancelled = true;
+        AddDomainEvent(new SaleCancelledEvent(Id, CustomerId));
     }
 
     public Sale()

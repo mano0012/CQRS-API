@@ -2,6 +2,6 @@
 
 public class CreateSaleRequest
 {
-    public string BranchName { get; private set; } = string.Empty;
-    public List<CreateSaleItemRequest> Items { get; private set; } = new();
+    public string BranchName { get; set; } = string.Empty;
+    public List<CreateSaleItemRequest> Items { get; set; } = new();
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Ambev.DeveloperEvaluation.ORM.Repositories;
 
@@ -28,4 +29,21 @@ public class SaleRepository : ISaleRepository
         await _context.SaveChangesAsync(cancellationToken);
         return sale;
     }
+
+    
+    public async Task<Sale?> GetByIdAsync(Guid saleId, Guid CustomerId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Sale
+            .Include(s => s.Items)
+            .FirstOrDefaultAsync(s => s.Id == saleId && s.CustomerId == CustomerId, cancellationToken);
+    }
+
+    public async Task<List<Sale>> GetByCustomerAsync(Guid CustomerId, CancellationToken cancellationToken = default)
+    {
+        return await _context.Sale
+        .Include(s => s.Items)
+        .Where(s => s.CustomerId == CustomerId)
+        .ToListAsync(cancellationToken);
+    }
+
 }
