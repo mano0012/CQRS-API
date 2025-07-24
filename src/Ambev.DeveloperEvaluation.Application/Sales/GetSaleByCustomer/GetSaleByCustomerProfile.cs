@@ -3,9 +3,9 @@ using AutoMapper;
 
 namespace Ambev.DeveloperEvaluation.Application.Sales.GetSaleByCustomer;
 
-public class GetSaleByIdProfile : Profile
+public class GetSaleByCustomerProfile : Profile
 {
-    public GetSaleByIdProfile()
+    public GetSaleByCustomerProfile()
     {
         CreateMap<SaleItem, GetSaleItemByCustomerResult>();
         CreateMap<Sale, GetSaleByCustomerResult>();
