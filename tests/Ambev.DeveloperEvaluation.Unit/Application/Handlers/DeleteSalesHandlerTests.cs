@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Ambev.DeveloperEvaluation.Unit.Application;
+namespace Ambev.DeveloperEvaluation.Unit.Application.Handlers;
 
 using System;
 using System.Threading;
@@ -75,7 +75,7 @@ public class DeleteSaleHandlerTests
 
         var expectedItemResult = new DeleteSaleItemsResult
         {
-            ItemId = saleItem.Id,
+            ItemId = saleItem.ItemId,
             ItemName = saleItem.ItemName,
             Quantity = saleItem.Quantity,
             Cancelled = true,

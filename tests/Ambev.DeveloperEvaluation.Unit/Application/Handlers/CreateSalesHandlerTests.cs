@@ -87,7 +87,6 @@ public class CreateSaleHandlerTests
         await _saleRepository.Received(1)
             .CreateAsync(Arg.Any<Sale>(), Arg.Any<CancellationToken>());
     }
-
     private Item GenerateValidItem()
     {
         var item = new Item("Product A", 10m);
