@@ -24,11 +24,7 @@ public class GetSaleByCustomerHandler : IRequestHandler<GetSaleByCustomerQuery, 
             throw new ValidationException(validationResult.Errors);
 
         var saleList = await _repository.GetByCustomerAsync(request.CustomerId);
-
-        if (saleList.Count == 0)
-        {
-            throw new DomainException($"Sales for customer {request.CustomerId} not found.");
-        }
+        
         var data = _mapper.Map<List<GetSaleByCustomerResult>>(saleList);
         return data;
 

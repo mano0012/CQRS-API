@@ -9,6 +9,7 @@ public static class ExceptionMiddlewaresExtension
         return app
             .UseMiddleware<ValidationExceptionMiddleware>()
             .UseMiddleware<DomainExceptionMiddleware>()
-            .UseMiddleware<UnauthorizedAccessExceptionMiddleware>();
+            .UseMiddleware<UnauthorizedAccessExceptionMiddleware>()
+            .UseMiddleware<NotFoundExceptionMiddleware>();
     }
 }

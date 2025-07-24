@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Ambev.DeveloperEvaluation.Domain.Events;
 
-public class SaleCancelledEvent : BaseEvent
+public class SaleModifiedEvent : BaseEvent
 {
     public Guid SaleId { get; }
 
-    public SaleCancelledEvent(Guid saleId)
+    public SaleModifiedEvent(Guid saleId)
     {
         SaleId = saleId;
     }
 
     public override string GetEventMessage()
     {
-        return $"Sale {SaleId} cancelled";
+        return $"Sale {SaleId} modified";
     }
 }

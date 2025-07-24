@@ -14,6 +14,7 @@ public class DefaultContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Item> Items { get; set; }
     public DbSet<Sale> Sale { get; set; }
+    public DbSet<SaleItem> SaleItem { get; set; }
 
     private readonly IDomainEventPublisher _domainEventPublisher;
 

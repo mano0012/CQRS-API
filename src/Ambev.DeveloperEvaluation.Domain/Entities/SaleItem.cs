@@ -34,10 +34,10 @@ public class SaleItem : BaseEntity
 
     private decimal CalculateDiscount()
     {
-        if(_discountStrategy == null)
-            throw new ArgumentNullException("Discount Strategy not set");
+        if(_discountStrategy != null)
+            return _discountStrategy.CalculateDiscount(this);
 
-        return _discountStrategy.CalculateDiscount(this);
+        return 0;
 
     }
 
@@ -62,7 +62,7 @@ public class SaleItem : BaseEntity
             throw new DomainException("Quantity must be between 1 and 20");
     }
 
-    public void CancelItem()
+    public void Cancel()
     {
         if (!Cancelled)
         {

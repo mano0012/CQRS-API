@@ -1,4 +1,5 @@
-﻿using Ambev.DeveloperEvaluation.Domain.Repositories;
+﻿using Ambev.DeveloperEvaluation.Domain.Exceptions;
+using Ambev.DeveloperEvaluation.Domain.Repositories;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
@@ -23,11 +24,11 @@ public class GetSaleByIdHandler : IRequestHandler<GetSaleByIdQuery, GetSaleByIdR
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var sale = await _repository.GetByIdAsync(request.SaleId, request.CustomerId);
+        var sale = await _repository.GetByIdAndCustomerAsync(request.SaleId, request.CustomerId);
 
         if(sale == null)
         {
-            throw new DomainException($"Sale {request.SaleId} not found.");
+            throw new NotFoundException($"Sale {request.SaleId} not found.");
         }
 
         return _mapper.Map<GetSaleByIdResult>(sale);

@@ -41,13 +41,31 @@ public class Sale : BaseEntity
 
         foreach (var item in Items)
         {
-            item.CancelItem();
+            item.Cancel();
         }
 
         Cancelled = true;
-        AddDomainEvent(new SaleCancelledEvent(Id, CustomerId));
+        AddDomainEvent(new SaleCancelledEvent(Id));
     }
 
+    public void UpdateCustomer(Guid customerId)
+    {
+        if (customerId == Guid.Empty)
+            return;
+
+        CustomerId = customerId;
+
+        AddDomainEvent(new SaleModifiedEvent(Id));
+    }
+
+    public void UpdateBranch(string branchName)
+    {
+        if (string.IsNullOrEmpty(branchName) || string.IsNullOrWhiteSpace(branchName))
+            return;
+
+        BranchName = branchName;
+        AddDomainEvent(new SaleModifiedEvent(Id));
+    }
     public Sale()
     { }
 }

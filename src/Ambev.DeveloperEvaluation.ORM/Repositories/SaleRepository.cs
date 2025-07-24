@@ -27,11 +27,12 @@ public class SaleRepository : ISaleRepository
     {
         await _context.Sale.AddAsync(sale, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
+
         return sale;
     }
 
     
-    public async Task<Sale?> GetByIdAsync(Guid saleId, Guid CustomerId, CancellationToken cancellationToken = default)
+    public async Task<Sale?> GetByIdAndCustomerAsync(Guid saleId, Guid CustomerId, CancellationToken cancellationToken = default)
     {
         return await _context.Sale
             .Include(s => s.Items)
@@ -46,4 +47,49 @@ public class SaleRepository : ISaleRepository
         .ToListAsync(cancellationToken);
     }
 
+    public async Task<Sale?> GetByIdAsync(Guid saleId, bool trackItems, CancellationToken cancellationToken = default)
+    {
+
+        IQueryable<Sale> query = _context.Sale;
+
+        if (trackItems)
+            query = query.Include(s => s.Items);
+
+        return await query.FirstOrDefaultAsync(s => s.Id == saleId, cancellationToken);
+    }
+    public async Task<Sale> UpdateSaleAsync(Sale sale, CancellationToken cancellationToken = default)
+    {
+        var entry = _context.Entry(sale);
+        bool isTracked = entry.State != EntityState.Detached;
+
+        if (!isTracked)
+        {
+            _context.Sale.Update(sale);
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+        return sale;
+    }
+
+    public async Task<SaleItem?> GetSaleItemByIdAsync(Guid saleId, Guid itemId, CancellationToken cancellationToken = default)
+    {
+        return await _context.SaleItem
+            .FirstOrDefaultAsync(s =>
+                EF.Property<Guid>(s, "SaleId") == saleId && s.ItemId == itemId,
+            cancellationToken);
+    }
+
+    public async Task<SaleItem> UpdateItemAsync(SaleItem item, CancellationToken cancellationToken = default)
+    {
+        var entry = _context.Entry(item);
+        bool isTracked = entry.State != EntityState.Detached;
+
+        if (!isTracked)
+        {
+            _context.SaleItem.Update(item);
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+        return item;
+    }
 }

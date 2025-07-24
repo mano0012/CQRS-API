@@ -23,9 +23,10 @@ public class BaseEntity : IComparable<BaseEntity>
 
         return other!.Id.CompareTo(Id);
     }
-    protected void AddDomainEvent(object domainEvent)
+    protected void AddDomainEvent<TEvent>(TEvent domainEvent)
     {
-        _domainEvents.Add(domainEvent);
+        if (domainEvent != null && !_domainEvents.Any(e => e.GetType() == typeof(TEvent)))
+            _domainEvents.Add(domainEvent);
     }
     public void ClearDomainEvents()
     {
