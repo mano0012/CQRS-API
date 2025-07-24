@@ -1,3 +1,5 @@
 ﻿.vs
 obj
 */*/bin
+*/Debug
+src/Ambev.DeveloperEvaluation.WebApi/logs

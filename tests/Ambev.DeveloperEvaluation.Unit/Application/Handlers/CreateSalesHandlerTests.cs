@@ -59,17 +59,13 @@ public class CreateSaleHandlerTests
     [Fact]
     public async Task Handle_ShouldCreateSaleAndReturnResult_WhenCommandIsValid()
     {
-        var command = CreateSalesHandlerTestData.GenerateSaleValidCommand();
-        var item = GenerateValidItem();
+        var command = SalesHandlerTestData.GenerateSaleValidCommand();
+        var item = SalesHandlerTestData.GenerateValidItem();
+
         _itemRepository.GetByIdAsync(Arg.Any<Guid>()).Returns(item);
 
-        SaleItem saleItem = new SaleItem(
-            itemId: item.Id, 
-            itemName: item.Name, 
-            quantity: 2, 
-            unitPrice: 10,
-            discountStrategy: new NoDiscountStrategy());
-        
+        SaleItem saleItem = SalesHandlerTestData.GenerateValidSaleItem();
+
         var createdSale = new Sale(
             customer: command.CustomerId, 
             branch: command.BranchName, 
@@ -86,11 +82,5 @@ public class CreateSaleHandlerTests
         result.Should().BeEquivalentTo(expectedResult);
         await _saleRepository.Received(1)
             .CreateAsync(Arg.Any<Sale>(), Arg.Any<CancellationToken>());
-    }
-    private Item GenerateValidItem()
-    {
-        var item = new Item("Product A", 10m);
-        item.Id = Guid.NewGuid();
-        return item;
     }
 }

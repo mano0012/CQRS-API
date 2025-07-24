@@ -4,6 +4,7 @@ using Ambev.DeveloperEvaluation.Domain.Entities;
 using Ambev.DeveloperEvaluation.Domain.Exceptions;
 using Ambev.DeveloperEvaluation.Domain.Repositories;
 using Ambev.DeveloperEvaluation.Domain.Strategies.Discount;
+using Ambev.DeveloperEvaluation.Unit.Application.TestData;
 using AutoMapper;
 using FluentAssertions;
 using FluentValidation;
@@ -59,14 +60,7 @@ public class GetSaleByIdHandlerTests
             CustomerId = Guid.NewGuid()
         };
 
-        var item = GenerateValidItem();
-
-        SaleItem saleItem = new SaleItem(
-            itemId: item.Id,
-            itemName: item.Name,
-            quantity: 2,
-            unitPrice: 10,
-            discountStrategy: new NoDiscountStrategy());
+        var saleItem = SalesHandlerTestData.GenerateValidSaleItem();
 
         Sale sale = Substitute.For<Sale>(query.CustomerId, "Branch X", new List<SaleItem> { saleItem });
 
@@ -102,12 +96,5 @@ public class GetSaleByIdHandlerTests
 
         result.Should().BeEquivalentTo(expectedResult);
         await _repository.Received(1).GetByIdAndCustomerAsync(query.SaleId, query.CustomerId);
-    }
-
-    private Item GenerateValidItem()
-    {
-        var item = new Item("Product A", 10m);
-        item.Id = Guid.NewGuid();
-        return item;
     }
 }

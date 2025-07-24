@@ -1,7 +1,0 @@
-2025-07-20 15:45:00.554 -03:00 [INF] Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckService Health Check enabled at: '/health'
-2025-07-20 15:45:00.635 -03:00 [INF] Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager User profile is available. Using 'C:\Users\Luiz Mattos\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
-2025-07-20 15:45:00.718 -03:00 [INF] Microsoft.Hosting.Lifetime Now listening on: https://localhost:7181
-2025-07-20 15:45:00.719 -03:00 [INF] Microsoft.Hosting.Lifetime Now listening on: http://localhost:5119
-2025-07-20 15:45:00.750 -03:00 [INF] Microsoft.Hosting.Lifetime Application started. Press Ctrl+C to shut down.
-2025-07-20 15:45:00.751 -03:00 [INF] Microsoft.Hosting.Lifetime Hosting environment: Development
-2025-07-20 15:45:00.752 -03:00 [INF] Microsoft.Hosting.Lifetime Content root path: E:\Projetos\Ambev\abi-gth-omnia-developer-evaluation\template\backend\src\Ambev.DeveloperEvaluation.WebApi

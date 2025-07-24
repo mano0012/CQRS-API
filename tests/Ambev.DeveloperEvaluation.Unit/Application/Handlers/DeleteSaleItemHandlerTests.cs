@@ -60,6 +60,7 @@ public class DeleteSaleItemHandlerTests
         };
 
         var saleItem = Substitute.For<SaleItem>(command.ItemId, "Product X", 1, 10m, new NoDiscountStrategy());
+
         _saleRepository.GetSaleItemByIdAsync(Arg.Any<Guid>(), Arg.Any<Guid>(), Arg.Any<CancellationToken>())
             .Returns(saleItem);
 
